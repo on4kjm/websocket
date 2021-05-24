@@ -8,25 +8,6 @@ window.onload = function () {
     // var msg = document.getElementById("msg");
     var log = document.getElementById("log");
 
-    function appendLog(item) {
-        var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
-        log.appendChild(item);
-        if (doScroll) {
-            log.scrollTop = log.scrollHeight - log.clientHeight;
-        }
-    }
-
-    // document.getElementById("form").onsubmit = function () {
-    //     if (!conn) {
-    //         return false;
-    //     }
-    //     if (!msg.value) {
-    //         return false;
-    //     }
-    //     conn.send(msg.value);
-    //     msg.value = "";
-    //     return false;
-    // };
 
     if (window["WebSocket"]) {
         conn = new WebSocket("ws://localhost:8080/morserino");
@@ -38,13 +19,23 @@ window.onload = function () {
         conn.onmessage = function (evt) {
             var message = evt.data;
             console.log("message: "+ message +".");
-            var log = document.getElementById("log");
-            var item = log.lastChild;
-            if(!item) {
-                item = document.createElement("div");
+            var messages = evt.data.split('\n');
+
+            for (var i = 0; i < messages.length; i++) {
+                if(i == 0) {
+                    var log = document.getElementById("log");
+                    var item = log.lastChild;
+                    if(!item) {
+                        item = document.createElement("div");
+                    }
+                    item.innerHTML += message; 
+                } else {
+                    var item = document.createElement("div");
+                    item.innerText = messages[i];
+                }
+                log.appendChild(item);
+                item.scrollIntoView();
             }
-            item.innerHTML += message;            
-            appendLog(item);
         };
     } else {
         var item = document.createElement("div");
@@ -76,7 +67,7 @@ body {
     top: 0.5em;
     left: 0.5em;
     right: 0.5em;
-    bottom: 3em;
+    bottom: 0.5em;
     overflow: auto;
 }
 
@@ -106,9 +97,5 @@ body {
 </head>
 <body>
 <div id="log"></div>
-<form id="form">
-    <input type="text" id="line" />
-    <input type="text" id="msg" size="64"/>
-</form>
 </body>
 </html>
