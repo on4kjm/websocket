@@ -15,7 +15,7 @@ func Receive_loop() {
 	for t := range ticker.C {
 		output := fmt.Sprintf(t.Format("15:04:05 "))
 		i++
-		if(i == 4) {
+		if i == 4 {
 			output = output + "\n"
 			i = 0
 		}
