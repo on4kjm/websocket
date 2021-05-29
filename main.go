@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/on4kjm/websocket/serial_mock"
-	"github.com/on4kjm/websocket/websocket"
+	"github.com/on4kjm/websocket_demo/serial_mock"
+	"github.com/on4kjm/websocket_demo/websocket"
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +29,7 @@ func stats(w http.ResponseWriter, r *http.Request) {
 	go websocket.Writer(ws)
 }
 
-func setupRoutes(messageBuffer chan string) {
+func setupRoutes() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/morserino", stats)
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -38,9 +38,7 @@ func setupRoutes(messageBuffer chan string) {
 func main() {
 	fmt.Println("Websocket test")
 
-	messageBuffer := make(chan string)
-
 	go serial_mock.Receive_loop()
 
-	setupRoutes(messageBuffer)
+	setupRoutes()
 }

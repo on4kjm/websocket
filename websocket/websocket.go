@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/on4kjm/websocket/serial_mock"
+	"github.com/on4kjm/websocket_demo/serial_mock"
 )
 
 // We set our Read and Write buffer sizes

@@ -1,4 +1,4 @@
-module github.com/on4kjm/websocket
+module github.com/on4kjm/websocket_demo
 
 go 1.16
 
